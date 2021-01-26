@@ -16,3 +16,13 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => '/api/v1'], function () use ($router) {
+    $router->group(['prefix' => '/voucher'], function () use ($router) {
+        $router->post('/', 'VoucherController@add');
+        $router->get('/', 'VoucherController@getActive');
+        $router->get('/{id}', 'VoucherController@get');
+        $router->put('/{id}', 'VoucherController@edit');
+        $router->delete('/{id}', 'VoucherController@remove');
+    });
+});
