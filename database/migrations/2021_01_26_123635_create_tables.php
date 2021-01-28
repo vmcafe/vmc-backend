@@ -33,6 +33,7 @@ class CreateTables extends Migration
             $table->boolean('best')->unsigned();
             $table->string('photo', 99);
             $table->timestamps();
+            $table->softDeletes();
             $table->engine = 'InnoDB';
           });
                 
@@ -69,6 +70,7 @@ class CreateTables extends Migration
             $table->integer('ongkir')->unsigned()->nullable();
             $table->integer('sumcost')->unsigned()->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->engine = 'InnoDB';
           });
           Schema::table('orders', function (Blueprint $table) {

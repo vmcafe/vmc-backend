@@ -16,3 +16,14 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+$router->group(['prefix' => '/api/auth'], function () use ($router) {
+    $router->post('/register', 'AuthController@register');
+    $router->post('/login', 'AuthController@login');
+});
+
+$router->group(['prefix' => '/api/product'], function () use ($router) {
+    $router->get('/{id}', 'ProductController@getProduct');
+    $router->get('/', 'ProductController@getProducts');
+    $router->post('/', 'ProductController@addProduct');
+    $router->get('/best', 'ProductController@getBest');
+});
