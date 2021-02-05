@@ -8,8 +8,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 
 class Controller extends BaseController
