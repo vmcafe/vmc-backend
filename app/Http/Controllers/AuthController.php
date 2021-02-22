@@ -7,7 +7,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function __construct()
+     public function __construct()
     {
     }
 
@@ -44,17 +44,15 @@ class AuthController extends Controller
         $rules = [
             'name' => 'required',
             'email' => 'required',
+            'gender' => 'required',
             'password' => 'required',
-            'phone' => 'required',
-
         ];
         $this->validate($request, $rules);
         $user = new User;
         $user->email = $request->email;
         $user->name = $request->name;
+        $user->gender = $request->gender;
         $user->password = app('hash')->make($request->password);
-
-        $user->phone = $request->phone;
 
         $user->save();
         return $this->responseSuccess($user);
