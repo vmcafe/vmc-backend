@@ -4,29 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+
 class ProductController extends Controller
 {
     public function addProduct(Request $request)
     {
         $rules = [
             'name' => 'required',
+            'id_category' => 'required',
             'description' => 'required',
-            'amount' => 'required',
+            'stock' => 'required',
+            'type' => 'required',
+            'netto' => 'required',
             'price' => 'required',
-            'best' => 'required',
             'photo' => 'required',
         ];
         $this->validate($request, $rules);
 
         $product = new Product;
         $product->name = $request->name;
+        $product->id_category = $request->id_category;
         $product->photo = $request->file('photo');
         $tujuan = 'data_gambar';
         $product->photo->move($tujuan, $product->photo->getClientOriginalName());
         $product->description = $request->description;
-        $product->amount = $request->amount;
+        $product->stock = $request->stock;
         $product->price = $request->price;
-        $product->best = $request->best;
+        $product->type = $request->type;
+        $product->netto = $request->netto;
 
         $product->save();
 
@@ -36,24 +41,40 @@ class ProductController extends Controller
     public function getProducts()
     {
         $data = Product::whereNull('deleted_at')
-        ->get();
+            ->get();
 
         return $this->responseSuccess($data);
     }
 
     public function getProduct($id)
     {
-       $product = Product::find($id);
+        if (Product::where('id_category', $id)->first()) {
+            $hasil = Product::where('id_category', $id)
+                ->get();
 
-       return response()
-       ->json(['data' => $product], 200);
+            return response()
+                ->json(['data' => $hasil], 200);
+        } else {
+            return response()->json([
+                'message' => 'data tidak ditemukan',
+                'data' => (object) []
+            ], 404);
+        }
     }
 
-    public function getBest()
+    public function getDetailProduct($id)
     {
-        $hasil = Product::where('best', 1)
-            ->get();
-    
-        return $this->responseSuccess($hasil);
+        if (Product::where('id', $id)->first()) {
+            $hasil = Product::where('id', $id)
+                ->get();
+
+            return response()
+                ->json(['data' => $hasil], 200);
+        } else {
+            return response()->json([
+                'message' => 'data tidak ditemukan',
+                'data' => (object) []
+            ], 404);
+        }
     }
 }

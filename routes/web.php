@@ -19,17 +19,23 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => '/api/auth'], function () use ($router) {
     $router->post('/register', 'AuthController@register');
     $router->post('/login', 'AuthController@login');
-    $router->get('/me', 'ApiController@me');
 });
 
+$router->group(['prefix' => '/api/user', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/me', 'AuthController@me');
+});
 $router->group(['prefix' => '/api/product'], function () use ($router) {
-    $router->get('/{id}', 'ProductController@getProduct');
+    $router->get('/{id}', 'ProductController@getProduct'); //produk per kategori
+    $router->get('/s/{id}', 'ProductController@getDetailProduct'); //produk per kategori
     $router->get('/', 'ProductController@getProducts');
     $router->post('/', 'ProductController@addProduct');
-    $router->get('/best', 'ProductController@getBest');
 });
 
-$router->group(['prefix' => '/category'], function () use ($router) {
+$router->group(['prefix' => '/api/category'], function () use ($router) {
     $router->get('/', 'CategoryController@getCategory');
     $router->post('/', 'CategoryController@addCategory');
+});
+$router->group(['prefix' => '/api/article'], function () use ($router) {
+    $router->get('/', 'ArticleController@getArticle');
+    $router->post('/', 'ArticleController@addArticle');
 });

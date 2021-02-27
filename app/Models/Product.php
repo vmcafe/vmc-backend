@@ -9,7 +9,8 @@ class Product extends Model
   protected $table = 'products';
   protected $primaryKey = 'id';
   protected $fillable = [
-    'name', 'description', 'amount', 'price', 'best', 'photo', 'id_category'
+    'name', 'description', 'stock', 'price', 'best', 
+    'photo', 'id_category', 'type', 'netto'
   ];
 
   public function cart()

@@ -45,12 +45,14 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required',
             'gender' => 'required',
+            'phone' => 'required',
             'password' => 'required',
         ];
         $this->validate($request, $rules);
         $user = new User;
         $user->email = $request->email;
         $user->name = $request->name;
+        $user->phone = $request->phone;
         $user->gender = $request->gender;
         $user->password = app('hash')->make($request->password);
 

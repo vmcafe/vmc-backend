@@ -1,5 +1,4 @@
 <?php
-
 return [
     'defaults' => [
         'guard' => 'api',
@@ -16,11 +15,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => 'App\Model\User::class',
+            'model' => App\Models\User::class,
         ],
     ],
 
-    'password' => [
+    'passwords' => [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
