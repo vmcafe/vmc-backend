@@ -29,6 +29,7 @@ $router->group(['prefix' => '/api/product'], function () use ($router) {
     $router->get('/s/{id}', 'ProductController@getDetailProduct'); //produk per kategori
     $router->get('/', 'ProductController@getProducts');
     $router->post('/', 'ProductController@addProduct');
+    $router->get('/rec/{id}', 'ProductController@getReccomProduct');
 });
 
 $router->group(['prefix' => '/api/category'], function () use ($router) {
@@ -37,5 +38,17 @@ $router->group(['prefix' => '/api/category'], function () use ($router) {
 });
 $router->group(['prefix' => '/api/article'], function () use ($router) {
     $router->get('/', 'ArticleController@getArticle');
+    $router->get('/big', 'ArticleController@getArticleBig');
     $router->post('/', 'ArticleController@addArticle');
+});
+
+$router->group(['prefix' => '/api/cart', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/', 'CartController@getCart');
+    $router->post('/', 'CartController@addCart');
+});
+
+$router->group(['prefix' => '/order', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->post('/pivot', 'OrderController@orderProduct');
+    $router->post('/edit', 'OrderController@putOrder');
+    $router->get('/', 'OrderController@getOrder');
 });

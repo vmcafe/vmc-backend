@@ -40,7 +40,7 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        $data = Product::whereNull('deleted_at')
+        $data = Product::where('type', 'medium')
             ->get();
 
         return $this->responseSuccess($data);
@@ -67,6 +67,28 @@ class ProductController extends Controller
         if (Product::where('id', $id)->first()) {
             $hasil = Product::where('id', $id)
                 ->get();
+
+            return response()
+                ->json(['data' => $hasil], 200);
+        } else {
+            return response()->json([
+                'message' => 'data tidak ditemukan',
+                'data' => (object) []
+            ], 404);
+        }
+    }
+
+    public function getReccomProduct($id)
+    {
+        if (Product::where('id_category', $id)->first()) {
+            if ($id == 1) {
+                $hasil = Product::where('id_category', 2)
+                    ->get();
+            }
+            else {
+                $hasil = Product::where('id_category', 1)
+                    ->get();
+            }
 
             return response()
                 ->json(['data' => $hasil], 200);

@@ -37,4 +37,13 @@ class ArticleController extends Controller
         return response()
         ->json(['data' => $data], 200);
     }
+
+    public function getArticleBig()
+    {
+        $data = Article::where('type', 0)
+        ->get();
+
+        return response()
+        ->json(['data' => $data], 200);
+    }
 }
