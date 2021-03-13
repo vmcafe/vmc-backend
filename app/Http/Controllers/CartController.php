@@ -23,7 +23,6 @@ class CartController extends Controller
         $cart->id_user = $user;
         $cart->id_product = $request->id_product;
         $cart->quantity = $request->quantity;
-        $cart->note = $request->note;
         $cart->save();
         return $this->responseSuccess($cart);
     }
