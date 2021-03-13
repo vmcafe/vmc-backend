@@ -12,8 +12,7 @@ class CartController extends Controller
         $rules = [
             // 'id_user' => 'required',
             'id_product' => 'required',
-            'quantity' => 'required',
-            'note' => 'sometimes',
+            'quantity' => 'required'
         ];
         $this->validate($request, $rules);
 
