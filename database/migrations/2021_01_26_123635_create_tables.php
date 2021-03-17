@@ -62,11 +62,23 @@ class CreateTables extends Migration
       $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
     });
 
+    Schema::create('wishlists', function (Blueprint $table) {
+      $table->increments('id', true)->unsigned();
+      $table->integer('id_user')->unsigned();
+      $table->integer('id_product')->unsigned();
+      $table->timestamps();
+      $table->engine = 'InnoDB';
+    });
+    Schema::table('wishlists', function (Blueprint $table) {
+      $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+      $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
+    });
+
     Schema::create('vouchers', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
       $table->string('promo_code', 7);
       $table->dateTime('active_until');
-      $table->bigInteger('max_cut');
+      $table->integer('max_cut');
       $table->integer('percentage');
       $table->softDeletes()->nullable();
       $table->timestamps();

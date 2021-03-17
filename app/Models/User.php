@@ -46,7 +46,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Models\Cart', 'id_user');
     }
-
+    public function wishlist()
+    {
+        return $this->hasMany('App\Models\Wishlist', 'id_user');
+    }
     public function order()
     {
         return $this->hasMany('App\Models\Order', 'id_user');

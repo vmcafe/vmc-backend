@@ -17,6 +17,10 @@ class Product extends Model
   {
     return $this->hasMany('App\Models\Cart', 'id_product');
   }
+  public function wishlist()
+  {
+    return $this->hasMany('App\Models\Wishlist', 'id_product');
+  }
   public function category()
   {
     return $this->belongsTo('App\Models\Category', 'id_category');

@@ -15,7 +15,7 @@ class Voucher extends Model
     protected  $table = 'vouchers';
 
     protected $fillable = [
-        'name', 'detail', 'active_until', 'max_cut', 'promo_code', 'percentage'
+        'active_until', 'max_cut', 'promo_code', 'percentage'
     ];
 
     protected $hidden = ['deleted_at'];

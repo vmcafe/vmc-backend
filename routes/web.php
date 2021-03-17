@@ -47,8 +47,22 @@ $router->group(['prefix' => '/api/cart', 'middleware' => 'auth:api'], function (
     $router->post('/', 'CartController@addCart');
 });
 
-$router->group(['prefix' => '/order', 'middleware' => 'auth:api'], function () use ($router) {
+$router->group(['prefix' => '/api/order', 'middleware' => 'auth:api'], function () use ($router) {
     $router->post('/pivot', 'OrderController@orderProduct');
     $router->post('/edit', 'OrderController@putOrder');
     $router->get('/', 'OrderController@getOrder');
+});
+
+$router->group(['prefix' => '/api/wishlist', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->post('/add', 'WishlistController@addWishlist');
+    $router->get('/get', 'WishlistController@getWishlist');
+    $router->get('/del', 'WishlistController@delWishlist');
+});
+
+$router->group(['prefix' => '/api/voucher'], function () use ($router) {
+    $router->post('/', 'VoucherController@add');
+    $router->get('/active', 'VoucherController@getActive');
+    $router->get('/{id}', 'VoucherController@get');
+    $router->put('/', 'VoucherController@edit');
+    $router->delete('/{id}', 'VoucherController@remove');
 });
