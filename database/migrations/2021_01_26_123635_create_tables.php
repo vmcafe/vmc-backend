@@ -24,6 +24,12 @@ class CreateTables extends Migration
       $table->softDeletes();
       $table->engine = 'InnoDB';
     });
+    Schema::create('couriers', function (Blueprint $table) {
+      $table->increments('id', true)->unsigned();
+      $table->string('name');
+      $table->string('cost');
+      $table->timestamps();
+  });
 
     Schema::create('categories', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
@@ -89,6 +95,7 @@ class CreateTables extends Migration
       $table->increments('id', true)->unsigned();
       $table->integer('id_user')->unsigned();
       $table->integer('id_voucher')->unsigned()->nullable();
+      $table->integer('id_courier')->unsigned()->nullable();
       $table->string('status', 20)->nullable();
       $table->string('payment', 99)->nullable();
       $table->string('address', 199)->nullable();
@@ -102,6 +109,7 @@ class CreateTables extends Migration
     Schema::table('orders', function (Blueprint $table) {
       $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
       $table->foreign('id_voucher')->references('id')->on('vouchers')->onDelete('cascade');
+      $table->foreign('id_courier')->references('id')->on('couriers')->onDelete('cascade');
     });
 
     Schema::create('ordersproducts', function (Blueprint $table) {
