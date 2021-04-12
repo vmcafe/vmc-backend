@@ -20,7 +20,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone',
+        'name', 'email', 'password', 'phone', 'role'
     ];
 
     /**
@@ -53,5 +53,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function order()
     {
         return $this->hasMany('App\Models\Order', 'id_user');
+    }
+    public function address()
+    {
+        return $this->hasMany('App\Models\Address', 'id_user');
     }
 }

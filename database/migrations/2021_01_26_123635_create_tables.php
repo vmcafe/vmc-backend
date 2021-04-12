@@ -19,18 +19,27 @@ class CreateTables extends Migration
       $table->string('email', 99)->unique();
       $table->string('gender', 10);
       $table->string('phone', 20)->unique();
+      $table->enum('role', ['customer', 'admin']);
       $table->string('password', 99);
       $table->timestamps();
       $table->softDeletes();
       $table->engine = 'InnoDB';
     });
-    Schema::create('couriers', function (Blueprint $table) {
+    Schema::create('address', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
-      $table->string('name');
-      $table->string('cost');
+      $table->integer('id_user')->unsigned();
+      $table->string('receiver', 99);
+      $table->string('phone', 20);
+      $table->string('district', 20);
+      $table->string('postal_code', 20);
+      $table->string('street', 99);
       $table->timestamps();
-  });
-
+      $table->softDeletes();
+      $table->engine = 'InnoDB';
+    });
+    Schema::table('address', function (Blueprint $table) {
+      $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+    });
     Schema::create('categories', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
       $table->string('name', 99);
@@ -95,10 +104,8 @@ class CreateTables extends Migration
       $table->increments('id', true)->unsigned();
       $table->integer('id_user')->unsigned();
       $table->integer('id_voucher')->unsigned()->nullable();
-      $table->integer('id_courier')->unsigned()->nullable();
       $table->string('status', 20)->nullable();
       $table->string('payment', 99)->nullable();
-      $table->string('address', 199)->nullable();
       $table->integer('range')->unsigned()->nullable();
       $table->integer('ongkir')->unsigned()->nullable();
       $table->integer('sumcost')->unsigned()->nullable();
@@ -109,7 +116,6 @@ class CreateTables extends Migration
     Schema::table('orders', function (Blueprint $table) {
       $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
       $table->foreign('id_voucher')->references('id')->on('vouchers')->onDelete('cascade');
-      $table->foreign('id_courier')->references('id')->on('couriers')->onDelete('cascade');
     });
 
     Schema::create('ordersproducts', function (Blueprint $table) {
@@ -126,14 +132,6 @@ class CreateTables extends Migration
       $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
     });
 
-    Schema::create('admin', function (Blueprint $table) {
-      $table->increments('id', true)->unsigned();
-      $table->string('name', 99);
-      $table->string('email', 99);
-      $table->string('password', 99);
-      $table->softDeletes();
-      $table->timestamps();
-    });
     Schema::create('article', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
       $table->string('name', 99);
@@ -158,12 +156,27 @@ class CreateTables extends Migration
       $table->string('email', 99)->unique();
       $table->string('gender', 10);
       $table->string('phone', 20)->unique();
+      $table->enum('role', ['customer', 'admin']);
       $table->string('password', 99);
       $table->timestamps();
       $table->softDeletes();
       $table->engine = 'InnoDB';
     });
-
+    Schema::create('address', function (Blueprint $table) {
+      $table->increments('id', true)->unsigned();
+      $table->integer('id_user');
+      $table->string('receiver', 99);
+      $table->string('phone', 20)->unique();
+      $table->string('district', 20);
+      $table->string('postal_code', 20);
+      $table->string('street', 99);
+      $table->timestamps();
+      $table->softDeletes();
+      $table->engine = 'InnoDB';
+    });
+    Schema::table('address', function (Blueprint $table) {
+      $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+    });
     Schema::create('categories', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
       $table->string('name', 99);
@@ -177,10 +190,9 @@ class CreateTables extends Migration
       $table->string('name', 99);
       $table->text('description');
       $table->integer('stock')->unsigned(); //stok produk
-      $table->string('type', 99)->unsigned();
+      $table->string('type', 99);
       $table->integer('netto')->unsigned();
       $table->integer('price')->unsigned();
-      $table->boolean('bundle')->unsigned();
       $table->string('photo', 99);
       $table->timestamps();
       $table->softDeletes();
@@ -194,7 +206,6 @@ class CreateTables extends Migration
       $table->integer('id_user')->unsigned();
       $table->integer('id_product')->unsigned();
       $table->integer('quantity')->unsigned();
-      $table->string('note', 199);
       $table->timestamps();
       $table->engine = 'InnoDB';
     });
@@ -203,10 +214,23 @@ class CreateTables extends Migration
       $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
     });
 
+    Schema::create('wishlists', function (Blueprint $table) {
+      $table->increments('id', true)->unsigned();
+      $table->integer('id_user')->unsigned();
+      $table->integer('id_product')->unsigned();
+      $table->timestamps();
+      $table->engine = 'InnoDB';
+    });
+    Schema::table('wishlists', function (Blueprint $table) {
+      $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+      $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
+    });
+
     Schema::create('vouchers', function (Blueprint $table) {
+      $table->increments('id', true)->unsigned();
       $table->string('promo_code', 7);
       $table->dateTime('active_until');
-      $table->bigInteger('max_cut');
+      $table->integer('max_cut');
       $table->integer('percentage');
       $table->softDeletes()->nullable();
       $table->timestamps();
@@ -219,7 +243,6 @@ class CreateTables extends Migration
       $table->integer('id_voucher')->unsigned()->nullable();
       $table->string('status', 20)->nullable();
       $table->string('payment', 99)->nullable();
-      $table->string('address', 199)->nullable();
       $table->integer('range')->unsigned()->nullable();
       $table->integer('ongkir')->unsigned()->nullable();
       $table->integer('sumcost')->unsigned()->nullable();
@@ -246,19 +269,11 @@ class CreateTables extends Migration
       $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');
     });
 
-    Schema::create('admin', function (Blueprint $table) {
-      $table->increments('id', true)->unsigned();
-      $table->string('name', 99);
-      $table->string('email', 99);
-      $table->string('password', 99);
-      $table->softDeletes();
-      $table->timestamps();
-    });
     Schema::create('article', function (Blueprint $table) {
       $table->increments('id', true)->unsigned();
       $table->string('name', 99);
       $table->string('photo', 99);
-      $table->string('type', 99);
+      $table->boolean('type');
       $table->string('link', 99);
       $table->softDeletes();
       $table->timestamps();

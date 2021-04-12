@@ -17,8 +17,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 $router->group(['prefix' => '/api/auth'], function () use ($router) {
-    $router->post('/register', 'AuthController@register');
-    $router->post('/login', 'AuthController@login');
+    $router->post('/register', 'AuthController@registerC');
+    $router->post('/registera', 'AuthController@registerA');
+    $router->post('/login', 'AuthController@loginC');
+    $router->post('/logina', 'AuthController@loginA');
 });
 
 $router->group(['prefix' => '/api/user', 'middleware' => 'auth:api'], function () use ($router) {
@@ -65,4 +67,10 @@ $router->group(['prefix' => '/api/voucher'], function () use ($router) {
     $router->get('/{id}', 'VoucherController@get');
     $router->put('/', 'VoucherController@edit');
     $router->delete('/{id}', 'VoucherController@remove');
+});
+
+$router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->post('/add', 'AddressController@add');
+    $router->get('/get', 'AddressController@get');
+    $router->get('/province', 'AddressController@getProvince');
 });

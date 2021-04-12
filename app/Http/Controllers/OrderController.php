@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Order;
+use App\Models\OrderProduct;
+use App\Models\Product;
 class OrderController extends Controller
 {
     public function orderProduct()
@@ -89,4 +91,5 @@ class OrderController extends Controller
 
         return $join;
     }
+    
 }
