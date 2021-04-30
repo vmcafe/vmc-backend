@@ -72,5 +72,6 @@ $router->group(['prefix' => '/api/voucher'], function () use ($router) {
 $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], function () use ($router) {
     $router->post('/add', 'AddressController@add');
     $router->get('/get', 'AddressController@get');
+    $router->put('/selected', 'AddressController@putSelected');
     $router->get('/province', 'AddressController@getProvince');
 });

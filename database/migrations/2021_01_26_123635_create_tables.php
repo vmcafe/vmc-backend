@@ -69,6 +69,7 @@ class CreateTables extends Migration
       $table->integer('id_user')->unsigned();
       $table->integer('id_product')->unsigned();
       $table->integer('quantity')->unsigned();
+      $table->integer('sumcost')->unsigned();
       $table->timestamps();
       $table->engine = 'InnoDB';
     });
@@ -105,9 +106,6 @@ class CreateTables extends Migration
       $table->integer('id_user')->unsigned();
       $table->integer('id_voucher')->unsigned()->nullable();
       $table->string('status', 20)->nullable();
-      $table->string('payment', 99)->nullable();
-      $table->integer('range')->unsigned()->nullable();
-      $table->integer('ongkir')->unsigned()->nullable();
       $table->integer('sumcost')->unsigned()->nullable();
       $table->timestamps();
       $table->softDeletes();

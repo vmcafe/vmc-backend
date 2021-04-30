@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use App\Models\Cart;
 class OrderController extends Controller
 {
     public function orderProduct()
@@ -29,11 +30,11 @@ class OrderController extends Controller
                 $orderproduct->id_order = $order->id;
                 $orderproduct->id_product = $hasil[$i]->id_product;
                 $orderproduct->quantity = $hasil[$i]->quantity;
-                $cost = Product::where('id', $orderproduct->id_product)
-                    ->first();
-                $orderproduct->cost = $cost->price * $orderproduct->quantity;
+                $orderproduct->cost = $hasil[$i]->sumcost;
                 $orderproduct->save();
             };
+            $del = Cart::where('id_user', $user)
+                ->delete();
         }
     }
 
@@ -47,25 +48,9 @@ class OrderController extends Controller
         $hasil = Order::find($order->id);
         $hasil->id_user = $user;
         $hasil->status = $request->status;
-        $hasil->address = $request->address;
-        $hasil->range = $request->range;
-        $hasil->payment = $request->payment;
         $hasil->id_voucher = $request->id_voucher;
-        $hasil->id_courier = $request->id_courier;
-        if ($hasil->range <= 5000) {
-            $hasil->ongkir = 5000;
-        } else {
-            $sisaRange = ($hasil->range - 5000) / 1000;
-            $ongkirSisa = round($sisaRange) * 1000;
-            $hasil->ongkir = 5000 + $ongkirSisa;
-        }
 
-        $cost = OrderProduct::select('cost')
-            ->where('id_order', $order->id)
-            ->get();
-
-        $hasil->sumcost = $cost->sum('cost') + $hasil->ongkir;
-        $hasil->payment = $request->payment;
+        $hasil->sumcost = 
 
         $hasil->save();
     }

@@ -23,23 +23,26 @@ class Controller extends BaseController
         return new JsonResponse($struct, $code);
     }
 
-    public function responseException(\Exception $error)
+    public function responseException(\Exception $e)
     {
-        $code = $error->getCode();
-        $developer_message = $error->getMessage() . '. In file ' . $error->getFile() . ' line ' . $error->getLine();
-        $struct = [
-            'status' => $code,
-            'developer_message' => $developer_message,
-            'user_message' => $error->getMessage(),
-            'error_code' => $code,
-        ];
-        if (method_exists($error, 'errors')) {
-            unset($struct['developer_message']);
-            $struct['errors'] = $error->errors();
-            $struct['status'] = 422;
-            $struct['error_code'] = 422;
+        $code = $e->getCode();
+
+        if ($code <= 0 || $code > 500) {
+            $code = 500;
         }
-        return new JsonResponse($struct, $code);
+
+        $developerMessage = $e->getMessage() . " file " . $e->getFile() . " in line " . $e->getLine();
+        if (method_exists($e, 'errors')) {
+            $developerMessage = $e->errors();
+        }
+
+        $responseException = [
+            'user_message' => $e->getMessage(),
+            'developer_message' => $developerMessage,
+            'code' => $code,
+        ];
+        return new JsonResponse($responseException, $code);
+
     }
 
     public function responsePagination(Reader $reader, $code = 200)

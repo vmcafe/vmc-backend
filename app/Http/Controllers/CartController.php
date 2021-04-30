@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -22,6 +23,9 @@ class CartController extends Controller
         $cart->id_user = $user;
         $cart->id_product = $request->id_product;
         $cart->quantity = $request->quantity;
+        $cost = Product::where('id', $cart->id_product)
+            ->first();
+        $cart->sumcost = $cost->price * $cart->quantity;
         $cart->save();
         return $this->responseSuccess($cart);
     }

@@ -27,7 +27,7 @@ class AddressController extends Controller
             $address->phone = $request->phone;
             $address->postal_code = $request->postal_code;
             $address->street = $request->street;
-
+            $address->selected = 1;
             $address->save();
             return $this->responseSuccess($address);
         } catch (\Exception $e) {
@@ -52,6 +52,26 @@ class AddressController extends Controller
         }
     }
 
+    public function putSelected(Request $request)
+    {
+        try {
+            $id_user = auth()->user()->id;
+            $hasil = Address::where('id_user', $id_user)
+                ->get();
+
+            for ($i = 0; $i < count($hasil); $i++) {
+                $hasil[$i]->update(['selected' => false]);
+            };
+            $id = $request->id;
+            $data = Address::find($id);
+            $data->update(['selected' => true]);
+            $dd = Address::where('id_user', $id_user)
+            ->get();
+            return $this->responseSuccess($dd);
+        } catch (\Exception $e) {
+            return $this->responseException($e);
+        }
+    }
     public function getProvince()
     {
         $response = Http::withHeaders([
