@@ -75,3 +75,4 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
     $router->put('/selected', 'AddressController@putSelected');
     $router->get('/province', 'AddressController@getProvince');
 });
+$router->get('/api/search', 'SearchController@get');
