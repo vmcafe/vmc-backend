@@ -69,7 +69,6 @@ class CreateTables extends Migration
       $table->integer('id_user')->unsigned();
       $table->integer('id_product')->unsigned();
       $table->integer('quantity')->unsigned();
-      $table->integer('sumcost')->unsigned();
       $table->timestamps();
       $table->engine = 'InnoDB';
     });
