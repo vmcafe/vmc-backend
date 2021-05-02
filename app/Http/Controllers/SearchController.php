@@ -13,7 +13,7 @@ class SearchController extends Controller
             $search = $request->search;
             $product = Product::where('name', 'LIKE', "%{$search}%")
                 ->get();
-            if ($product != null) {
+            if (count($product) == 0) {
                 return response()->json([
                     'message' => 'data tidak ditemukan',
                     'data' => (object) []
