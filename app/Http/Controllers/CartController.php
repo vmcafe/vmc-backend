@@ -25,7 +25,7 @@ class CartController extends Controller
         $cart->quantity = $request->quantity;
         $cost = Product::where('id', $cart->id_product)
             ->first();
-        $cart->sumcost = $cost->price * $cart->quantity;
+        $cart->cost = $cost->price * $cart->quantity;
         $cart->save();
         return $this->responseSuccess($cart);
     }

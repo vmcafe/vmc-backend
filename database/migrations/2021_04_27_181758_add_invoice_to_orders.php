@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSelectedToAddress extends Migration
+class AddInvoiceToOrders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddSelectedToAddress extends Migration
      */
     public function up()
     {
-        Schema::table('address', function (Blueprint $table) {
-            $table->boolean('selected')->after('street');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->integer('invoice')->unsigned()->after('id_product');
+            
         });
     }
 
@@ -25,8 +26,8 @@ class AddSelectedToAddress extends Migration
      */
     public function down()
     {
-        Schema::table('address', function (Blueprint $table) {
-            $table->boolean('selected')->after('street');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->integer('invoice')->unsigned()->after('id_product');
         });
     }
 }

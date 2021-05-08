@@ -4,77 +4,67 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\OrderProduct;
-use App\Models\Product;
+
+use App\Models\Address;
 use App\Models\Cart;
+
 class OrderController extends Controller
 {
     public function orderProduct()
     {
-        $order = new Order();
-        // $product = new Product();
-        $user = auth()->user()->id;
+        try {
+            $order = new Order();
+            // $product = new Product();
+            $user = auth()->user()->id;
 
-        $order->id_user = $user;
-        $order->save();
-        $idOrder = $order->id;
-
-
-        if (Cart::where('id_user', $user)->first()) {
-            $hasil = Cart::where('id_user', $user)
-                ->get();
+            if (Cart::where('id_user', $user)->first()) {
+                $hasil = Cart::where('id_user', $user)
+                    ->get();
 
 
-            for ($i = 0; $i < count($hasil); $i++) {
-                $orderproduct = new OrderProduct();
-                $orderproduct->id_order = $order->id;
-                $orderproduct->id_product = $hasil[$i]->id_product;
-                $orderproduct->quantity = $hasil[$i]->quantity;
-                $orderproduct->cost = $hasil[$i]->sumcost;
-                $orderproduct->save();
-            };
-            $del = Cart::where('id_user', $user)
-                ->delete();
+                for ($i = 0; $i < count($hasil); $i++) {
+                    $order = new Order();
+                    $order->id_user = $user;
+                    $order->id_product = $hasil[$i]->id_product;
+                    $order->invoice = rand(11111111, 99999999);
+                    $order->status = 1;
+                    $order->quantity = $hasil[$i]->quantity;
+                    $order->cost = $hasil[$i]->cost;
+                    $hasil[$i]->delete();
+                    $order->save();
+                };
+                return $this->responseSuccess($hasil);
+            }
+        } catch (\Exception $e) {
+            return $this->responseException($e);
         }
     }
 
     public function putOrder(Request $request)
     {
-        $user = auth()->user()->id;
-        $order = Order::select('id')
-            ->where('id_user', $user)
-            ->latest()
-            ->first();
-        $hasil = Order::find($order->id);
-        $hasil->id_user = $user;
-        $hasil->status = $request->status;
-        $hasil->id_voucher = $request->id_voucher;
+        try {
+           $user = auth()->user()->id;
+            $address = Address::where('id_user', $user)
+                ->where('selected', 1)
+                ->first();
+            $order = Order::where('id_user', $user)
+                ->whereNull('deleted_at')
+                ->update(['id_address' => $address->id]);
 
-        $hasil->sumcost = 
-
-        $hasil->save();
+                return $this->responseSuccess($order);
+        } catch (\Throwable $e) {
+            return $this->responseException($e);
+        }
+        
     }
 
     public function getOrder()
     {
         $user = auth()->user()->id;
-        $order = Order::select('id')
-            ->where('id_user', $user)
-            ->latest()
-            ->first();
-        $join = Order::join('ordersproducts', 'orders.id', '=', 'ordersproducts.id_order')
-            ->select(
-                'ordersproducts.id_product',
-                'ordersproducts.quantity',
-                'ordersproducts.cost',
-                'orders.status',
-                'orders.sumcost',
-                'orders.payment'
-            )
-            ->where('ordersproducts.id_order', $order->id)
+        $order = Order::where('id_user', $user)
             ->get();
+        
 
-        return $join;
+        return $order;
     }
-    
 }

@@ -76,3 +76,4 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
     $router->get('/province', 'AddressController@getProvince');
 });
 $router->get('/api/search', 'SearchController@get');
+$router->post('/api/payment', 'PaymentController@testPayment');

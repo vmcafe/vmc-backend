@@ -9,14 +9,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
+    use SoftDeletes;
     protected $table = 'orders';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id_user', 'status', 'id_voucher',
-        'sumcost', 'payment',
+        'cost', 'payment', 'id_product',
         'address', 'range', 'ongkir'
     ];
     public function user()
@@ -26,11 +27,6 @@ class Order extends Model
 
     public function product()
     {
-        return $this->belongsToMany('App\Models\Product')
-            ->using('App\Models\OrderProduct')
-            ->withPivot([
-                'quantity',
-                'cost',
-            ]);
+        return $this->belongsTo('App\Models\Product', 'id_product');
     }
 }

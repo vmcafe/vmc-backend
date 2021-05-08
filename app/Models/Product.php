@@ -27,11 +27,6 @@ class Product extends Model
   }
   public function order()
   {
-    return $this->belongsToMany('App\Models\Order')
-      ->using('App\Models\OrderProduct')
-      ->withPivot([
-        'quantity',
-        'cost',
-      ]);
+    return $this->hasMany('App\Models\Cart', 'id_product');
   }
 }
