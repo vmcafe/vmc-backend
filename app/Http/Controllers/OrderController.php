@@ -43,7 +43,7 @@ class OrderController extends Controller
     public function putOrder(Request $request)
     {
         try {
-           $user = auth()->user()->id;
+            $user = auth()->user()->id;
             $address = Address::where('id_user', $user)
                 ->where('selected', 1)
                 ->first();
@@ -51,19 +51,23 @@ class OrderController extends Controller
                 ->whereNull('deleted_at')
                 ->update(['id_address' => $address->id]);
 
-                return $this->responseSuccess($order);
+            return $this->responseSuccess($order);
         } catch (\Throwable $e) {
             return $this->responseException($e);
         }
-        
     }
 
     public function getOrder()
     {
         $user = auth()->user()->id;
-        $order = Order::where('id_user', $user)
+        $order = Order::where('orders.id_user', $user)
+            ->join('address', 'orders.id_address', '=', 'address.id')
+            ->join('products', 'orders.id_product', '=', 'products.id')
+            ->join('users', 'address.id_user', '=', 'users.id')
+            ->select('orders.*', 'address.phone', 'address.street', 'address.district',
+            'products.name', 'users.name')
             ->get();
-        
+
 
         return $order;
     }
