@@ -14,7 +14,7 @@ class AddOrderIdToOrder extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('orderr_id', 255)->after('id_product');
+            $table->string('orderr_id', 255)->after('invoice');
         });
     }
 
@@ -26,7 +26,7 @@ class AddOrderIdToOrder extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('orderr_id', 255)->after('id_product');
+            $table->string('orderr_id', 255)->after('invoice');
         });
     }
 }

@@ -27,7 +27,7 @@ class AddressController extends Controller
             $address->phone = $request->phone;
             $address->postal_code = $request->postal_code;
             $address->street = $request->street;
-            $address->selected = 1;
+            $address->selected = 0;
             $address->save();
             return $this->responseSuccess($address);
         } catch (\Exception $e) {

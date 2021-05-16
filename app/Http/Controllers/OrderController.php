@@ -45,7 +45,7 @@ class OrderController extends Controller
         }
     }
 
-    public function putOrder(Request $request)
+    public function putOrder()
     {
         try {
             $user = auth()->user()->id;
@@ -53,7 +53,7 @@ class OrderController extends Controller
                 ->where('selected', 1)
                 ->first();
             $order = Order::where('id_user', $user)
-                ->whereNull('deleted_at')
+                ->whereNull('id_address')
                 ->update(['id_address' => $address->id]);
 
             return $this->responseSuccess($order);
