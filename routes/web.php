@@ -53,6 +53,7 @@ $router->group(['prefix' => '/api/order', 'middleware' => 'auth:api'], function 
     $router->post('/pivot', 'OrderController@orderProduct');
     $router->post('/edit', 'OrderController@putOrder');
     $router->get('/', 'OrderController@getOrder');
+    $router->post('/payment/{id}', 'OrderController@pembayaran');
 });
 
 $router->group(['prefix' => '/api/wishlist', 'middleware' => 'auth:api'], function () use ($router) {
@@ -75,5 +76,4 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
     $router->put('/selected', 'AddressController@putSelected');
     $router->get('/province', 'AddressController@getProvince');
 });
-$router->get('/api/search', 'SearchController@get');
-$router->post('/api/payment', 'PaymentController@testPayment');
+$router->post('api/callback', 'midtransCallback@Callback');

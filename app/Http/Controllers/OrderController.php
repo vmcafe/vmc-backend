@@ -10,6 +10,10 @@ use App\Models\Cart;
 
 class OrderController extends Controller
 {
+    public function __construct(){
+        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        \Midtrans\Config::$isProduction = env('MIDTRANS_ISPRODUCTION');
+    }
     public function orderProduct()
     {
         try {
@@ -26,6 +30,7 @@ class OrderController extends Controller
                     $order = new Order();
                     $order->id_user = $user;
                     $order->id_product = $hasil[$i]->id_product;
+                    $order->orderr_id = "Pembayaran-".time();
                     $order->invoice = rand(11111111, 99999999);
                     $order->status = 1;
                     $order->quantity = $hasil[$i]->quantity;
@@ -79,16 +84,16 @@ class OrderController extends Controller
     {
         $rules = [
             'bank' => 'required',
-            'harga_total' => 'required|integer'
         ];
         $this->validate($request, $rules);
         $order = Order::find($id);
 
-        $order_id = $order->id;
+        $order_id = $order->orderr_id;
         $transaction_details = array(
             'order_id'    => $order_id,
             'gross_amount'  => $order->cost
         );
+        
         $items = array(
             array(
                 'price'    => $order->cost,
@@ -96,5 +101,44 @@ class OrderController extends Controller
                 'name'     => 'Pembayaran booking wisata'
             )
         );
+        
+        if($request->bank == "mandiri"){
+            $payment_type = 'echannel';
+            $bank_transfer = 'echannel';
+            $bank_transfer_value = array(
+                "bill_info1" => "Pembayaran",
+                "bill_info2" => "booking"
+            );
+        }else{
+            $payment_type = 'bank_transfer';
+            $bank_transfer = 'bank_transfer';
+            $bank_transfer_value = array(
+                "bank"  => $request->bank
+            );
+        }
+
+        $transaction_data = array(
+            'payment_type'        => $payment_type,
+            'transaction_details' => $transaction_details,
+            'item_details'        => $items,
+            'bank_transfer'        => $bank_transfer_value,
+            'echannel'            => $bank_transfer_value  
+        );
+
+        $response = \Midtrans\CoreApi::charge($transaction_data);
+        // if($response->status_code == "201"){
+        //     $order->bank = $request->bank;
+        //     if($request->bank == "mandiri"){
+        //         $order->nomor_virtual = $response->biller_code." ".$response->bill_key;
+        //     }else{
+        //         $order->nomor_virtual = $response->va_numbers[0]->va_number;
+        //     }
+        //     $order->status = "Pending";
+        //     $order->save();
+            return $this->responseSuccess($response);
+        // }else{
+        //     return $this->responseException($e);
+        // }
     }
+
 }

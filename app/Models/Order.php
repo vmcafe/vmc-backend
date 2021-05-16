@@ -18,7 +18,7 @@ class Order extends Model
     protected $fillable = [
         'id_user', 'status', 'id_voucher',
         'cost', 'payment', 'id_product',
-        'address', 'range', 'ongkir'
+        'address', 'range', 'ongkir', 'orderr_id'
     ];
     public function user()
     {

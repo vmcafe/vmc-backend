@@ -239,7 +239,7 @@ class CreateTables extends Migration
       $table->integer('id_address')->unsigned()->nullable();
       $table->integer('id_product')->unsigned();
       $table->integer('quantity')->unsigned();
-      $table->enum('status', ['Menunggu Pembayaran', 'Diproses', 'Dikirim', 'Selesai']);
+      $table->enum('status', ['Menunggu Pembayaran', 'Diproses', 'Dikirim', 'Selesai', 'Gagal']);
       $table->integer('cost')->unsigned()->nullable();
       $table->timestamps();
       $table->softDeletes();
