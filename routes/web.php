@@ -77,3 +77,4 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
     $router->get('/province', 'AddressController@getProvince');
 });
 $router->post('api/callback', 'midtransCallback@Callback');
+$router->get('api/search', 'SearchController@get');
