@@ -78,3 +78,8 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
 });
 $router->post('api/callback', 'midtransCallback@Callback');
 $router->get('api/search', 'SearchController@get');
+
+$router->group(['prefix' => '/api/profile', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/get', 'UserController@getProfile');
+    $router->put('/put', 'UserController@editProfile');
+});

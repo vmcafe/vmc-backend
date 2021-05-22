@@ -104,28 +104,15 @@ class OrderController extends Controller
         
         if($request->bank == "mandiri"){
             $payment_type = 'echannel';
-            $bank_transfer = array(
+            $bank_transfer = 'echannel';
+            $bank_transfer_value = array(
                 "bill_info1" => "Pembayaran",
                 "bill_info2" => "booking"
             );
-        }elseif ($request->bank == "bca") {
+        }else{
             $payment_type = 'bank_transfer';
-            $bank_transfer = array(
-                "bank"  => $request->bank
-            );
-        }elseif ($request->bank == "bni") {
-            $payment_type = 'bank_transfer';
-            $bank_transfer = array(
-                "bank"  => $request->bank
-            );
-        }elseif ($request->bank == "bri") {
-            $payment_type = 'bank_transfer';
-            $bank_transfer = array(
-                "bank"  => $request->bank
-            );
-        }elseif ($request->bank == "permata") {
-            $payment_type = 'bank_transfer';
-            $bank_transfer = array(
+            $bank_transfer = 'bank_transfer';
+            $bank_transfer_value = array(
                 "bank"  => $request->bank
             );
         }
@@ -135,8 +122,8 @@ class OrderController extends Controller
             'payment_type'        => $payment_type,
             'transaction_details' => $transaction_details,
             'item_details'        => $items,
-            'bank_transfer'        => $bank_transfer,
-            'echannel'            => $bank_transfer  
+            'bank_transfer'        => $bank_transfer_value,
+            'echannel'            => $bank_transfer_value  
         );
 
         $response = \Midtrans\CoreApi::charge($transaction_data);
