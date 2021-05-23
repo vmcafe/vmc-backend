@@ -27,6 +27,7 @@ class AddBirthdayToUser extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->date('birthday')->after('role')->nullable();
+            
         });
     }
 }
