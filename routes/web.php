@@ -83,3 +83,8 @@ $router->group(['prefix' => '/api/profile', 'middleware' => 'auth:api'], functio
     $router->get('/get', 'UserController@getProfile');
     $router->put('/put', 'UserController@editProfile');
 });
+$router->group(['prefix' => '/api/ongkir'], function () use ($router) {
+    $router->get('/getP', 'CourierController@getProvince');
+    $router->get('/getC', 'CourierController@getCity');
+    $router->put('/put', 'UserController@editProfile');
+});
