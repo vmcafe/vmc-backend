@@ -70,7 +70,8 @@ class OrderController extends Controller
                 ->join('address', 'orders.id_address', '=', 'address.id')
                 ->join('products', 'orders.id_product', '=', 'products.id')
                 ->join('users', 'address.id_user', '=', 'users.id')
-                ->select('orders.*', 'address.phone', 'address.street', 'address.district',
+                ->select('orders.*', 'address.phone', 'address.street', 
+                'address.district', 'address.city',
                 'products.name', 'users.name')
                 ->get();
     

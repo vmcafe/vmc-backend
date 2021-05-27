@@ -75,6 +75,8 @@ $router->group(['prefix' => '/api/address', 'middleware' => 'auth:api'], functio
     $router->get('/get', 'AddressController@get');
     $router->put('/selected', 'AddressController@putSelected');
     $router->get('/province', 'AddressController@getProvince');
+    $router->put('/edit/{id}', 'AddressController@editProfile');
+    $router->delete('/{id}', 'AddressController@delete');
 });
 $router->post('api/callback', 'midtransCallback@Callback');
 $router->get('api/search', 'SearchController@get');
