@@ -110,12 +110,25 @@ class OrderController extends Controller
                 "bill_info1" => "Pembayaran",
                 "bill_info2" => "booking"
             );
-        }else{
+        }elseif ($request->bank == "bca") {
             $payment_type = 'bank_transfer';
             $bank_transfer = 'bank_transfer';
             $bank_transfer_value = array(
                 "bank"  => $request->bank
-            );
+            );  
+        
+        }elseif ($request->bank == "bni") {
+            $payment_type = 'bank_transfer';
+            $bank_transfer = 'bank_transfer';
+            $bank_transfer_value = array(
+                "bank"  => $request->bank
+            );  
+        }elseif ($request->bank == "bri") {
+            $payment_type = 'bank_transfer';
+            $bank_transfer = 'bank_transfer';
+            $bank_transfer_value = array(
+                "bank"  => $request->bank
+            );  
         }
 
 
