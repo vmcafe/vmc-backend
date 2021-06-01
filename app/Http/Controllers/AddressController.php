@@ -14,7 +14,6 @@ class AddressController extends Controller
             $rules = [
                 'receiver' => 'required|string|max:255',
                 'district' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
                 'postal_code' => 'required|string|min:5',
                 'phone' => 'required|string|min:10',
                 'street' => 'required|string|max:255',
@@ -25,7 +24,6 @@ class AddressController extends Controller
             $address->id_user = $user;
             $address->receiver = $request->receiver;
             $address->district = $request->district;
-            $address->city = $request->city;
             $address->phone = $request->phone;
             $address->postal_code = $request->postal_code;
             $address->street = $request->street;
