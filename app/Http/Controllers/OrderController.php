@@ -66,17 +66,18 @@ class OrderController extends Controller
     {
         try {
             $user = auth()->user()->id;
-            $order = Order::where('orders.id_user', $user)
-                ->join('address', 'orders.id_address', '=', 'address.id')
-                ->join('products', 'orders.id_product', '=', 'products.id')
-                ->join('users', 'address.id_user', '=', 'users.id')
-                ->select('orders.*', 'address.phone', 'address.street', 
-                'address.district', 'address.city',
-                'products.name', 'users.name')
+            $order = Order::with(['address','products'])
+            ->where('orders.id_user', $user)
+            //     ->join('address', 'orders.id_address', '=', 'address.id')
+            //     ->join('products', 'orders.id_product', '=', 'products.id')
+            //     ->join('users', 'users.id', '=', 'address.id_user')
+            //     ->select('orders.*', 'address.phone', 'address.street', 
+            //     'address.district')
                 ->get();
     
     
-            return $this->responseSuccess($order);
+            return response()
+            ->json(['data' => $order], 200);
         } catch (\Throwable $e) {
             return $this->responseException($e);
         }

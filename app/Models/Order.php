@@ -20,13 +20,18 @@ class Order extends Model
         'cost', 'payment', 'id_product',
         'address', 'range', 'ongkir', 'orderr_id'
     ];
-    public function user()
+    public function users()
     {
         return $this->belongsTo('App\Models\User', 'id_user');
     }
 
-    public function product()
+    public function products()
     {
         return $this->belongsTo('App\Models\Product', 'id_product');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo('App\Models\Address', 'id_address');
     }
 }

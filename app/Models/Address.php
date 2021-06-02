@@ -23,6 +23,9 @@ class Address extends Model
     {
         return $this->belongsTo('App\Models\User', 'id_user');
     }
-
+    public function order()
+    {
+        return $this->hasMany('App\Models\Order', 'id_address');
+    }
     
 }
