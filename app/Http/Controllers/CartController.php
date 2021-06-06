@@ -34,7 +34,7 @@ class CartController extends Controller
     {
         $id = auth()->user()->id;
         $hasil = Cart::with(['products'])
-            ->where('Cart.id_user', $user)
+            ->where('Cart.id_user', $id)
             ->get();
 
             return response()
