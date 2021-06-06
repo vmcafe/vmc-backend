@@ -39,11 +39,6 @@ class CartController extends Controller
 
             return response()
                 ->json(['data' => $hasil], 200);
-        } else {
-            return response()->json([
-                'message' => 'data tidak ditemukan',
-                'data' => (object) []
-            ], 404);
-        }
+        
     }
 }
