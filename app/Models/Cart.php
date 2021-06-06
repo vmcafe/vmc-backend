@@ -13,7 +13,7 @@ class Cart extends Model
         'quantity', 'note'
     ];
 
-    public function product()
+    public function products()
     {
         return $this->belongsTo('App\Models\Product', 'id_product');
     }

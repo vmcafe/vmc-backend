@@ -33,12 +33,18 @@ class CartController extends Controller
     public function getCart()
     {
         $id = auth()->user()->id;
-        $hasil = Cart::with(['products'])
-            ->where('Cart.id_user', $id)
+        if (Cart::where('id_user', $id)->first()) {
+            $hasil = Cart::with(['products'])
+            ->where('carts.id_user', $id)
             ->get();
 
             return response()
                 ->json(['data' => $hasil], 200);
-        
+        } else {
+            return response()->json([
+                'message' => 'data tidak ditemukan',
+                'data' => (object) []
+            ], 404);
+        }
     }
 }
