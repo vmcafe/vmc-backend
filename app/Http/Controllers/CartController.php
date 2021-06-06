@@ -33,9 +33,9 @@ class CartController extends Controller
     public function getCart()
     {
         $id = auth()->user()->id;
-        if (Cart::where('id_user', $id)->first()) {
-            $hasil = Cart::where('id_user', $id)
-                ->get();
+        $hasil = Cart::with(['products'])
+            ->where('Cart.id_user', $user)
+            ->get();
 
             return response()
                 ->json(['data' => $hasil], 200);
