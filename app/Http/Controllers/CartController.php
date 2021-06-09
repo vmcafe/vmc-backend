@@ -91,7 +91,8 @@ class CartController extends Controller
         if (Cart::where('id_user', $id)->first()) {
             $cart = Cart::where('id_user', $id)
                 ->first();
-            return $this->responseSuccess($cart);
+            return response()
+                ->json(['data' => $cart], 200);
         }
     }
 }
