@@ -14,7 +14,7 @@ class AddInvoiceToOrders extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('invoice')->unsigned()->after('id_product');
+            $table->integer('invoice')->unsigned()->after('id_address');
             
         });
     }
@@ -27,7 +27,7 @@ class AddInvoiceToOrders extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('invoice')->unsigned()->after('id_product');
+            $table->integer('invoice')->unsigned()->after('id_address');
         });
     }
 }

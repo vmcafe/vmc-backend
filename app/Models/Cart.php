@@ -9,13 +9,18 @@ class Cart extends Model
     protected $table = 'carts';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id_user', 'id_product',
-        'quantity', 'note'
+        'id_user', 'quantity'
     ];
 
     public function products()
     {
-        return $this->belongsTo('App\Models\Product', 'id_product');
+        return $this->belongsToMany('App\Models\Product')
+            ->using('App\Models\CartProduct')
+            ->withPivot([
+                'quantity',
+                'id_product',
+                'cost',
+            ]);
     }
 
     public function user()

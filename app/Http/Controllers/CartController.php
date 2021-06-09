@@ -6,45 +6,95 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 
+use App\Models\CartProduct;
+
 class CartController extends Controller
 {
     public function addCart(Request $request)
     {
-        $rules = [
-            // 'id_user' => 'required',
-            'id_product' => 'required',
-            'quantity' => 'required'
-        ];
-        $this->validate($request, $rules);
+        try {
+            $user = auth()->user()->id;
+            $rules = [
+                // 'id_user' => 'required',
+                'id_product' => 'required',
+                'quantity' => 'required'
+            ];
+            $this->validate($request, $rules);
 
-        $user = auth()->user()->id;
-        // $valid = $request->all();
-        $cart = new Cart();
-        $cart->id_user = $user;
-        $cart->id_product = $request->id_product;
-        $cart->quantity = $request->quantity;
-        $cost = Product::where('id', $cart->id_product)
-            ->first();
-        $cart->cost = $cost->price * $cart->quantity;
-        $cart->save();
-        return $this->responseSuccess($cart);
+            if (Cart::where('id_user', $user)->first()) {
+                $cartproduct = new CartProduct();
+                $cart = Cart::where('id_user', $user)->first();
+                $cartproduct->id_cart = $cart->id;
+                $cartproduct->id_product = $request->id_product;
+                $cartproduct->quantity = $request->quantity;
+                $cost = Product::where('id', $cartproduct->id_product)
+                    ->first();
+                $cartproduct->cost = $cost->price * $cartproduct->quantity;
+                $cartproduct->save();
+                $total = CartProduct::where('id_cart', $cart->id)
+                    ->sum('cost');
+                $cart->total = $total;
+                $cart->save();
+                return $this->responseSuccess($cartproduct);
+            } else {
+                $cart = new Cart();
+                $cart->id_user = $user;
+                $cart->save();
+                $cartproduct = new CartProduct();
+                $cartproduct->id_cart = $cart->id;
+                $cartproduct->id_product = $request->id_product;
+                $cartproduct->quantity = $request->quantity;
+                $cost = Product::where('id', $cartproduct->id_product)
+                    ->first();
+                $cartproduct->cost = $cost->price * $cartproduct->quantity;
+                $cartproduct->save();
+                $total = CartProduct::where('id_cart', $cart->id)
+                    ->sum('cost');
+                $cart->total = $total;
+                $cart->save();
+                return $this->responseSuccess($cartproduct);
+            }
+        } catch (\Exception $e) {
+            return $this->responseException($e);
+        }
     }
 
     public function getCart()
     {
         $id = auth()->user()->id;
-        if (Cart::where('id_user', $id)->first()) {
-            $hasil = Cart::with(['products'])
-            ->where('carts.id_user', $id)
+        $cart = Cart::where('id_user', $id)
+            ->first();
+        $cartproduct = CartProduct::where('id_cart', $cart->id)
             ->get();
+        // if (Cart::where('id_user', $id)->first()) {
+        //     $hasil = Cart::where('carts.id_user', $id)
 
-            return response()
-                ->json(['data' => $hasil], 200);
-        } else {
-            return response()->json([
-                'message' => 'data tidak ditemukan',
-                'data' => (object) []
-            ], 404);
+        //         ->leftJoin('cartsproducts', 'carts.id', '=', 'cartsproducts.id_cart')
+        //         ->leftJoin('products', 'cartsproducts.id_product', '=', 'products.id')
+        //         ->leftJoin('users', 'users.id', '=', 'carts.id_user')
+        //         ->get();
+
+        return response()
+            ->json(['data' => $cartproduct], 200);
+        // } else {
+        //     return response()->json([
+        //         'message' => 'data tidak ditemukan',
+        //         'data' => (object) []
+        //     ], 404);
+        // }
+    }
+
+    public function getTotal()
+    {
+        $id = auth()->user()->id;
+        if (Cart::where('id_user', $id)->first()) {
+            $cart = Cart::where('id_user', $id)
+                ->first();
+            $total = CartProduct::where('id_cart', $cart->id)
+                ->sum('cost');
+            $cart->total = $total;
+            $cart->save;
+            return $this->responseSuccess($cart);
         }
     }
 }

@@ -46,6 +46,7 @@ $router->group(['prefix' => '/api/article'], function () use ($router) {
 
 $router->group(['prefix' => '/api/cart', 'middleware' => 'auth:api'], function () use ($router) {
     $router->get('/', 'CartController@getCart');
+    $router->get('/total', 'CartController@getTotal');
     $router->post('/', 'CartController@addCart');
 });
 
