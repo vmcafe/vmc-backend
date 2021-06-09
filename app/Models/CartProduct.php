@@ -15,4 +15,9 @@ class CartProduct extends Pivot
 {
     public $incrementing = true;
     protected $table = 'cartsproducts';
+
+    public function products()
+    {
+        return $this->belongsTo('App\Models\Product', 'id_product');
+    }
 }

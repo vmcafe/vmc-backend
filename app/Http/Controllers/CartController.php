@@ -64,7 +64,8 @@ class CartController extends Controller
         $id = auth()->user()->id;
         $cart = Cart::where('id_user', $id)
             ->first();
-        $cartproduct = CartProduct::where('id_cart', $cart->id)
+        $cartproduct = CartProduct::with(['products'])
+            ->where('id_cart', $cart->id)
             ->get();
         // if (Cart::where('id_user', $id)->first()) {
         //     $hasil = Cart::where('carts.id_user', $id)
