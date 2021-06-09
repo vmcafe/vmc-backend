@@ -91,10 +91,6 @@ class CartController extends Controller
         if (Cart::where('id_user', $id)->first()) {
             $cart = Cart::where('id_user', $id)
                 ->first();
-            $total = CartProduct::where('id_cart', $cart->id)
-                ->sum('cost');
-            $cart->total = $total;
-            $cart->save;
             return $this->responseSuccess($cart);
         }
     }
