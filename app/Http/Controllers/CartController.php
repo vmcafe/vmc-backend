@@ -65,10 +65,10 @@ class CartController extends Controller
             $id = auth()->user()->id;
             $cart = Cart::where('id_user', $id)
                 ->first();
-            $cartproduct = CartProduct::with(['products'])
+            $s = CartProduct::with(['products'])
                 ->where('id_cart', $cart->id)
                 ->get();
-                return $this->responseSuccess($cartproduct);
+                return $this->responseSuccess($s);
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
