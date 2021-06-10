@@ -61,12 +61,17 @@ class CartController extends Controller
 
     public function getCart()
     {
-        $id = auth()->user()->id;
-        $cart = Cart::where('id_user', $id)
-            ->first();
-        $cartproduct = CartProduct::with(['products'])
-            ->where('id_cart', $cart->id)
-            ->get();
+        try {
+            $id = auth()->user()->id;
+            $cart = Cart::where('id_user', $id)
+                ->first();
+            $cartproduct = CartProduct::with(['products'])
+                ->where('id_cart', $cart->id)
+                ->get();
+                return $this->responseSuccess($cartproduct);
+        } catch (\Exception $e) {
+            return $this->responseException($e);
+        }
         // if (Cart::where('id_user', $id)->first()) {
         //     $hasil = Cart::where('carts.id_user', $id)
 
@@ -75,8 +80,7 @@ class CartController extends Controller
         //         ->leftJoin('users', 'users.id', '=', 'carts.id_user')
         //         ->get();
 
-        return response()
-            ->json(['data' => $cartproduct], 200);
+        
         // } else {
         //     return response()->json([
         //         'message' => 'data tidak ditemukan',
@@ -87,12 +91,17 @@ class CartController extends Controller
 
     public function getTotal()
     {
-        $id = auth()->user()->id;
-        if (Cart::where('id_user', $id)->first()) {
-            $cart = Cart::where('id_user', $id)
-                ->first();
-            return response()
-                ->json(['data' => $cart], 200);
+        try {
+            $id = auth()->user()->id;
+            if (Cart::where('id_user', $id)->first()) {
+                $cart = Cart::where('id_user', $id)
+                    ->first();
+                return response()
+                    ->json(['data' => $cart], 200);
+            }
+            
+        } catch (\Exception $e) {
+            return $this->responseException($e);
         }
     }
 }
