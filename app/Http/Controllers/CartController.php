@@ -101,7 +101,7 @@ class CartController extends Controller
         try {
             if (Cart::where('id_user', $id)->first()) {
                 $cart = Cart::where('id_user', $id)
-                    ->first();
+                    ->get();
                 return response()
                     ->json(['data' => $cart], 200);
             }
