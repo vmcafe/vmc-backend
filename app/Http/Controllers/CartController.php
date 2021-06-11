@@ -61,8 +61,8 @@ class CartController extends Controller
 
     public function getCart()
     {
+        $id = auth()->user()->id;
         try {
-            $id = auth()->user()->id;
             $cart = Cart::where('id_user', $id)
                 ->first();
             $s = CartProduct::with(['products'])
@@ -91,8 +91,8 @@ class CartController extends Controller
 
     public function getTotal()
     {
+        $id = auth()->user()->id;
         try {
-            $id = auth()->user()->id;
             if (Cart::where('id_user', $id)->first()) {
                 $cart = Cart::where('id_user', $id)
                     ->first();
