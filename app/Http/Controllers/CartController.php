@@ -69,12 +69,10 @@ class CartController extends Controller
                 ->where('id_cart', $cart->id)
                 ->get();
 
-            if (Cart::where('id_user', $id)->first()) {
-                $sact = Cart::where('id_user', $id)
-                    ->first();
+            
                     return $this->responseSuccess($s);
                 
-            }
+            
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
