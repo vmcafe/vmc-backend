@@ -68,7 +68,13 @@ class CartController extends Controller
             $s = CartProduct::with(['products'])
                 ->where('id_cart', $cart->id)
                 ->get();
-                return $this->responseSuccess($s);
+
+            if (Cart::where('id_user', $id)->first()) {
+                $sact = Cart::where('id_user', $id)
+                    ->first();
+                    return $this->responseSuccess(['A' => $s, 'b' => $sact]);
+                
+            }
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
@@ -80,7 +86,7 @@ class CartController extends Controller
         //         ->leftJoin('users', 'users.id', '=', 'carts.id_user')
         //         ->get();
 
-        
+
         // } else {
         //     return response()->json([
         //         'message' => 'data tidak ditemukan',
@@ -99,7 +105,6 @@ class CartController extends Controller
                 return response()
                     ->json(['data' => $cart], 200);
             }
-            
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
