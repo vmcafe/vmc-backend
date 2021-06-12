@@ -69,10 +69,8 @@ class CartController extends Controller
                 ->where('id_cart', $cart->id)
                 ->get();
 
-            
-                    return $this->responseSuccess($s);
-                
-            
+
+            return $this->responseSuccess($s);
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
