@@ -134,12 +134,12 @@ class OrderController extends Controller
         $order_id = $order->orderr_id;
         $transaction_details = array(
             'order_id'    => $order_id,
-            'gross_amount'  => $order->cost
+            'gross_amount'  => $order->total
         );
 
         $items = array(
             array(
-                'price'    => $order->cost,
+                'price'    => $order->total,
                 'quantity' => 1,
                 'name'     => 'Pembayaran booking wisata'
             )
