@@ -145,26 +145,14 @@ class OrderController extends Controller
             )
         );
 
-        if ($request->bank == "mandiri") {
+        if($request->bank == "mandiri"){
             $payment_type = 'echannel';
             $bank_transfer = 'echannel';
             $bank_transfer_value = array(
                 "bill_info1" => "Pembayaran",
                 "bill_info2" => "booking"
             );
-        } elseif ($request->bank == "bca") {
-            $payment_type = 'bank_transfer';
-            $bank_transfer = 'bank_transfer';
-            $bank_transfer_value = array(
-                "bank"  => $request->bank
-            );
-        } elseif ($request->bank == "bni") {
-            $payment_type = 'bank_transfer';
-            $bank_transfer = 'bank_transfer';
-            $bank_transfer_value = array(
-                "bank"  => $request->bank
-            );
-        } elseif ($request->bank == "bri") {
+        }else{
             $payment_type = 'bank_transfer';
             $bank_transfer = 'bank_transfer';
             $bank_transfer_value = array(
