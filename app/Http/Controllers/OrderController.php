@@ -170,18 +170,12 @@ class OrderController extends Controller
         );
 
         $response = \Midtrans\CoreApi::charge($transaction_data);
-        // if($response->status_code == "201"){
-        //     $order->bank = $request->bank;
-        //     if($request->bank == "mandiri"){
-        //         $order->nomor_virtual = $response->biller_code." ".$response->bill_key;
-        //     }else{
-        //         $order->nomor_virtual = $response->va_numbers[0]->va_number;
-        //     }
-        //     $order->status = "Pending";
-        //     $order->save();
+        if($response->status_code == "201"){
+            $order->bank = $request->bank;
+            
+            $order->status = 2;
+            $order->save();
         return $this->responseSuccess($response);
-        // }else{
-        //     return $this->responseException($e);
-        // }
+        }
     }
 }
