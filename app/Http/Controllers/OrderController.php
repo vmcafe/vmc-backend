@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-
+use App\Models\OrderProduct;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\CartProduct;
 
 class OrderController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         \Midtrans\Config::$isProduction = env('MIDTRANS_ISPRODUCTION');
     }
@@ -18,28 +20,39 @@ class OrderController extends Controller
     {
         try {
             $order = new Order();
-            // $product = new Product();
             $user = auth()->user()->id;
+            // $product = new Product();
+            // $address = Address::where('id_user', $user)
+            //     ->where('selected', 1)
+            //     ->first();
+            // $order->id_address = $address->id;
+            $order->id_user = $user;
+            $order->orderr_id = "Pembayaran-" . time();
+            $order->invoice = rand(11111111, 99999999);
+            $order->status = 1;
+            $order->save();
 
-            if (Cart::where('id_user', $user)->first()) {
-                $hasil = Cart::where('id_user', $user)
-                    ->get();
-
-
-                for ($i = 0; $i < count($hasil); $i++) {
-                    $order = new Order();
-                    $order->id_user = $user;
-                    $order->id_product = $hasil[$i]->id_product;
-                    $order->orderr_id = "Pembayaran-".time();
-                    $order->invoice = rand(11111111, 99999999);
-                    $order->status = 1;
-                    $order->quantity = $hasil[$i]->quantity;
-                    $order->cost = $hasil[$i]->cost;
-                    $hasil[$i]->delete();
-                    $order->save();
-                };
-                return $this->responseSuccess($hasil);
-            }
+            $data = Cart::where('id_user', $user)->first();
+            $hasil = CartProduct::where('id_cart', $data->id)
+                ->get();
+            for ($i = 0; $i < count($hasil); $i++) {
+                $orderproduct = new OrderProduct();
+                $order = Order::where('id_user', $user)
+                    ->orderby('created_at', 'desc')
+                    ->first();
+                $orderproduct->id_order = $order->id;
+                $orderproduct->id_product = $hasil[$i]->id_product;
+                $orderproduct->quantity = $hasil[$i]->quantity;
+                $orderproduct->cost = $hasil[$i]->cost;
+                $hasil[$i]->delete();
+                $orderproduct->save();
+            };
+            $data->delete();
+            $total = OrderProduct::where('id_order', $order->id)
+                ->sum('cost');
+            $order->total = $total;
+            $order->save();
+            return $this->responseSuccess($hasil);
         } catch (\Exception $e) {
             return $this->responseException($e);
         }
@@ -64,21 +77,49 @@ class OrderController extends Controller
 
     public function getOrder()
     {
+        $id = auth()->user()->id;
         try {
-            $user = auth()->user()->id;
-            $order = Order::with(['address','products'])
-            ->where('orders.id_user', $user)
-            //     ->join('address', 'orders.id_address', '=', 'address.id')
-            //     ->join('products', 'orders.id_product', '=', 'products.id')
-            //     ->join('users', 'users.id', '=', 'address.id_user')
-            //     ->select('orders.*', 'address.phone', 'address.street', 
-            //     'address.district')
+            $order = Order::where('id_user', $id)
+                ->first();
+            $s = OrderProduct::with(['products'])
+                ->where('id_order', $order->id)
                 ->get();
-    
-    
-            return response()
-            ->json(['data' => $order], 200);
-        } catch (\Throwable $e) {
+
+
+            return $this->responseSuccess($s);
+        } catch (\Exception $e) {
+            return $this->responseException($e);
+        }
+        // try {
+        //     $user = auth()->user()->id;
+        //     $order = Order::with(['address', 'products'])
+        //         ->where('orders.id_user', $user)
+        //     ->join('address', 'orders.id_address', '=', 'address.id')
+        //     ->join('products', 'orders.id_product', '=', 'products.id')
+        //     ->join('users', 'users.id', '=', 'address.id_user')
+        //     ->select('orders.*', 'address.phone', 'address.street', 
+        //     'address.district')
+        // ->get();
+
+
+        //     return response()
+        //         ->json(['data' => $order], 200);
+        // } catch (\Throwable $e) {
+        //     return $this->responseException($e);
+        // }
+    }
+
+    public function getTotal()
+    {
+        $id = auth()->user()->id;
+        try {
+            if (Order::where('id_user', $id)->first()) {
+                $order = Order::where('id_user', $id)
+                    ->orderby('created_at', 'desc')
+                    ->first();
+                return $this->responseSuccess($order);
+            }
+        } catch (\Exception $e) {
             return $this->responseException($e);
         }
     }
@@ -95,7 +136,7 @@ class OrderController extends Controller
             'order_id'    => $order_id,
             'gross_amount'  => $order->cost
         );
-        
+
         $items = array(
             array(
                 'price'    => $order->cost,
@@ -103,33 +144,32 @@ class OrderController extends Controller
                 'name'     => 'Pembayaran booking wisata'
             )
         );
-        
-        if($request->bank == "mandiri"){
+
+        if ($request->bank == "mandiri") {
             $payment_type = 'echannel';
             $bank_transfer = 'echannel';
             $bank_transfer_value = array(
                 "bill_info1" => "Pembayaran",
                 "bill_info2" => "booking"
             );
-        }elseif ($request->bank == "bca") {
+        } elseif ($request->bank == "bca") {
             $payment_type = 'bank_transfer';
             $bank_transfer = 'bank_transfer';
             $bank_transfer_value = array(
                 "bank"  => $request->bank
-            );  
-        
-        }elseif ($request->bank == "bni") {
+            );
+        } elseif ($request->bank == "bni") {
             $payment_type = 'bank_transfer';
             $bank_transfer = 'bank_transfer';
             $bank_transfer_value = array(
                 "bank"  => $request->bank
-            );  
-        }elseif ($request->bank == "bri") {
+            );
+        } elseif ($request->bank == "bri") {
             $payment_type = 'bank_transfer';
             $bank_transfer = 'bank_transfer';
             $bank_transfer_value = array(
                 "bank"  => $request->bank
-            );  
+            );
         }
 
 
@@ -138,7 +178,7 @@ class OrderController extends Controller
             'transaction_details' => $transaction_details,
             'item_details'        => $items,
             'bank_transfer'        => $bank_transfer_value,
-            'echannel'            => $bank_transfer_value  
+            'echannel'            => $bank_transfer_value
         );
 
         $response = \Midtrans\CoreApi::charge($transaction_data);
@@ -151,10 +191,9 @@ class OrderController extends Controller
         //     }
         //     $order->status = "Pending";
         //     $order->save();
-            return $this->responseSuccess($response);
+        return $this->responseSuccess($response);
         // }else{
         //     return $this->responseException($e);
         // }
     }
-
 }

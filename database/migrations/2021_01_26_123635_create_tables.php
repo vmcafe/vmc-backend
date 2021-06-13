@@ -112,7 +112,7 @@ class CreateTables extends Migration
             $table->increments('id', true)->unsigned();
             $table->integer('id_user')->unsigned();
             $table->integer('id_address')->unsigned()->nullable();
-            
+
             $table->enum('status', ['Menunggu Pembayaran', 'Diproses', 'Dikirim', 'Selesai', 'Gagal']);
             $table->integer('total')->unsigned()->nullable();
             $table->timestamps();
@@ -121,7 +121,6 @@ class CreateTables extends Migration
         });
         Schema::table('orders', function (Blueprint $table) {
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            
             $table->foreign('id_address')->references('id')->on('address')->onDelete('cascade');
         });
 

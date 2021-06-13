@@ -27,6 +27,11 @@ class AddressController extends Controller
             $address->phone = $request->phone;
             $address->postal_code = $request->postal_code;
             $address->street = $request->street;
+            // $hasil = Address::where('id_user', $user)
+            // ->get();
+            // for ($i=0; $i < count($hasil); $i++) { 
+            //     $selected = Address::update(['selected' => 0]);
+            // }
             $address->selected = 0;
             $address->save();
             return $this->responseSuccess($address);
