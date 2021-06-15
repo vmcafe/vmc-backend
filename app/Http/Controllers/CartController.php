@@ -62,17 +62,21 @@ class CartController extends Controller
     public function getCart()
     {
         $id = auth()->user()->id;
-        try {
-            $cart = Cart::where('id_user', $id)
-                ->first();
-            $s = CartProduct::with(['products'])
-                ->where('id_cart', $cart->id)
-                ->get();
+        if (Cart::where('id_user', $id)->first()) {
+                $cart = Cart::where('id_user', $id)
+                    ->first();
+                $idcart = $cart->id;
+                $s = CartProduct::with(['products'])
+                    ->where('id_cart', $idcart)
+                    ->get();
 
-
-            return $this->responseSuccess($s);
-        } catch (\Exception $e) {
-            return $this->responseException($e);
+                return $this->responseSuccess($s);
+            
+        } else {
+            return response()->json([
+                'message' => 'Keranjang anda kosong',
+                'data' => (object) []
+            ], 404);
         }
         // if (Cart::where('id_user', $id)->first()) {
         //     $hasil = Cart::where('carts.id_user', $id)
@@ -84,10 +88,10 @@ class CartController extends Controller
 
 
         // } else {
-        //     return response()->json([
-        //         'message' => 'data tidak ditemukan',
-        //         'data' => (object) []
-        //     ], 404);
+            // return response()->json([
+            //     'message' => 'data tidak ditemukan',
+            //     'data' => (object) []
+            // ], 404);
         // }
     }
 
