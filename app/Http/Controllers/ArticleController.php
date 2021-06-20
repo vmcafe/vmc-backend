@@ -21,9 +21,15 @@ class ArticleController extends Controller
         $article->name = $request->name;
         $article->type = $request->type;
         $article->link = $request->link;
-        $article->photo = $request->file('photo');
-        $tujuan = 'data_gambar';
-        $article->photo->move($tujuan, $article->photo->getClientOriginalName());
+        $article->description = $request->description;
+
+        $foto = $request->file('photo');
+        $extension = $foto->getClientOriginalExtension();
+        $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
+        $article->photo = $foto->getFilename().'.'.$extension;
+        // $tujuan = 'data_gambar';
+        // $article->photo->move($tujuan, $article->photo->getClientOriginalExtension());
+
         $article->save();
 
         return $this->responseSuccess($article);

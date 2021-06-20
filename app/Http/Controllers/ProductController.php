@@ -24,9 +24,13 @@ class ProductController extends Controller
         $product = new Product;
         $product->name = $request->name;
         $product->id_category = $request->id_category;
-        $product->photo = $request->file('photo');
-        $tujuan = 'data_gambar';
-        $product->photo->move($tujuan, $product->photo->getClientOriginalName());
+        // $product->photo = $request->file('photo');
+        // $tujuan = 'data_gambar';
+        // $product->photo->move($tujuan, $product->photo->getClientOriginalName());
+        $foto = $request->file('photo');
+        $extension = $foto->getClientOriginalExtension();
+        $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
+        $product->photo = $foto->getFilename().'.'.$extension;
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
