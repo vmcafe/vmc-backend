@@ -23,15 +23,19 @@ class ProductController extends Controller
 
         $product = new Product;
         $product->name = $request->name;
+        
         $product->id_category = $request->id_category;
         // $product->photo = $request->file('photo');
         // $tujuan = 'data_gambar';
         // $product->photo->move($tujuan, $product->photo->getClientOriginalName());
-        $foto = $request->file('photo');
-        $extension = $foto->getClientOriginalExtension();
-        $foto->move('/home/vmct8135/public_html/uploads',$foto->getFilename().'.'.$extension);
-        $pathDefault = '/home/vmct8135/public_html/uploads/';
-        $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
+        // $foto = $request->photo->store('photo');
+        // $extension = $foto->getClientOriginalExtension();
+        // $foto->move('/home/vmct8135/public_html/uploads',$foto->getFilename().'.'.$extension);
+        // $pathDefault = '/home/vmct8135/public_html/uploads/';
+        // $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
+        $product->photo = $request->file('photo')->store(
+            '/home/vmct8135/public_html/uploads', 'public'
+           );
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
