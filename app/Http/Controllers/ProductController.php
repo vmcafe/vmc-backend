@@ -30,7 +30,7 @@ class ProductController extends Controller
         $foto = $request->file('photo');
         $extension = $foto->getClientOriginalExtension();
         $foto->move('/home/vmct8135/public_html/uploads',$foto->getFilename().'.'.$extension);
-        $pathDefault = 'https://vmcafe.id/uploads/';
+        $pathDefault = '/home/vmct8135/public_html/uploads';
         $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
         $product->description = $request->description;
         $product->stock = $request->stock;
