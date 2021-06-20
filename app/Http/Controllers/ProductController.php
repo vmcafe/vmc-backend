@@ -31,7 +31,7 @@ class ProductController extends Controller
         $extension = $foto->getClientOriginalExtension();
         $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
         $pathDefault = 'https://vmcafe.id/data_gambar/';
-        $product->photo = $foto->getFilename().'.'.$extension;
+        $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
