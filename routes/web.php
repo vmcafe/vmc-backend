@@ -86,9 +86,11 @@ $router->get('api/search', 'SearchController@get');
 $router->group(['prefix' => '/api/profile', 'middleware' => 'auth:api'], function () use ($router) {
     $router->get('/get', 'UserController@getProfile');
     $router->put('/put', 'UserController@editProfile');
+    $router->get('/all', 'UserController@editProfile');
 });
 $router->group(['prefix' => '/api/ongkir'], function () use ($router) {
     $router->get('/getP', 'CourierController@getProvince');
     $router->get('/getC', 'CourierController@getCity');
     $router->put('/put', 'UserController@editProfile');
 });
+$router->get('/api/user/all', 'UserController@getAllUser');

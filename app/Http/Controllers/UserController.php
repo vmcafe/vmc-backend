@@ -43,5 +43,13 @@ class UserController extends Controller
             return $this->responseException($e);
         }
     }
-    
+    public function getAllUser()
+    {
+        try {
+            $hasil = User::get();
+            return $this->responseSuccess($hasil);
+        } catch (\Exception $e) {
+            return $this->responseException($e);
+        }
+    }
 }

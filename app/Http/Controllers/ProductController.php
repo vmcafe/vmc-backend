@@ -34,8 +34,7 @@ class ProductController extends Controller
         // $pathDefault = '/home/vmct8135/public_html/uploads/';
         // $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
         $product->photo = $request->file('photo')->store(
-            '/home/vmct8135/repositories/vmc-backend/public/data_gambar', 'public'
-           );
+            'uploads');
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
