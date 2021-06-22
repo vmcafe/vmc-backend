@@ -26,7 +26,13 @@ class ArticleController extends Controller
         $foto = $request->file('photo');
         $extension = $foto->getClientOriginalExtension();
         $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
-        $article->photo = $foto->getFilename().'.'.$extension;
+        $pathDefault = 'https://api.vmcafe.id/data_gambar/';
+        $article->photo = $pathDefault.$foto->getFilename().'.'.$extension;
+
+        // $foto = $request->file('photo');
+        // $extension = $foto->getClientOriginalExtension();
+        // $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
+        // $article->photo = $foto->getFilename().'.'.$extension;
         // $tujuan = 'data_gambar';
         // $article->photo->move($tujuan, $article->photo->getClientOriginalExtension());
 
