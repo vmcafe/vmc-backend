@@ -28,13 +28,12 @@ class ProductController extends Controller
         // $product->photo = $request->file('photo');
         // $tujuan = 'data_gambar';
         // $product->photo->move($tujuan, $product->photo->getClientOriginalName());
-        // $foto = $request->photo->store('photo');
-        // $extension = $foto->getClientOriginalExtension();
-        // $foto->move('/home/vmct8135/public_html/uploads',$foto->getFilename().'.'.$extension);
-        // $pathDefault = '/home/vmct8135/public_html/uploads/';
-        // $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
-        $product->photo = $request->file('photo')->store(
-            'uploads');
+        $foto = $request->file('photo');
+        $extension = $foto->getClientOriginalExtension();
+        $foto->move('data_gambar',$foto->getFilename().'.'.$extension);
+        $pathDefault = 'https://api.vmcafe.id/data_gambar/';
+        $product->photo = $pathDefault.$foto->getFilename().'.'.$extension;
+        
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
