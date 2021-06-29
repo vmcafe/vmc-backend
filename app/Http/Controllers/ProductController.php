@@ -11,7 +11,6 @@ class ProductController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'id_category' => 'required',
             'description' => 'required',
             'stock' => 'required',
             'type' => 'required',
@@ -24,7 +23,6 @@ class ProductController extends Controller
         $product = new Product;
         $product->name = $request->name;
         
-        $product->id_category = $request->id_category;
         // $product->photo = $request->file('photo');
         // $tujuan = 'data_gambar';
         // $product->photo->move($tujuan, $product->photo->getClientOriginalName());
