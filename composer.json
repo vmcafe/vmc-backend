@@ -13,6 +13,7 @@
         "coraxster/flysystem-aws-s3-v3-minio": "^1.0",
         "flipbox/lumen-generator": "^8.2",
         "guzzlehttp/guzzle": "^7.3",
+        "kavist/rajaongkir": "1.0",
         "laravel/lumen-framework": "^8.0",
         "laravel/socialite": "^5.2",
         "league/flysystem-aws-s3-v3": "~1.0",
@@ -41,7 +42,10 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.3"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
