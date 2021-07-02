@@ -61,6 +61,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('filesystems');
+$app->configure('rajaongkir');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -97,6 +98,7 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+$app->register(Kavist\RajaOngkir\Providers\LaravelServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

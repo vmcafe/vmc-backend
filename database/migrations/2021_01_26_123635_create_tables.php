@@ -30,9 +30,11 @@ class CreateTables extends Migration
             $table->integer('id_user')->unsigned();
             $table->string('receiver', 99);
             $table->string('phone', 20);
-            $table->string('district', 20);
-            $table->string('postal_code', 20);
+            $table->string('kecamatan', 99);
+            $table->string('city', 99);
+            $table->string('province', 99);
             $table->string('street', 99);
+            $table->string('postal_code', 20);
             $table->boolean('selected');
             $table->timestamps();
             $table->softDeletes();
@@ -41,16 +43,9 @@ class CreateTables extends Migration
         Schema::table('address', function (Blueprint $table) {
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
-        Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id', true)->unsigned();
-            $table->string('name', 99);
-            $table->timestamps();
-            $table->engine = 'InnoDB';
-        });
 
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id', true)->unsigned();
-            $table->integer('id_category')->unsigned();
             $table->string('name', 99);
             $table->text('description');
             $table->integer('stock')->unsigned(); //stok produk
@@ -61,9 +56,6 @@ class CreateTables extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';
-        });
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');
         });
 
         Schema::create('carts', function (Blueprint $table) {

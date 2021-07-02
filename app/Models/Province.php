@@ -10,11 +10,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Province extends Model
 {
-    protected $table = 'city';
+    protected $table = 'provinces';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'city_id', 'province_id', 'type', 'city_name', 'postal_code'
+        'province_id', 'name'
     ];
 }

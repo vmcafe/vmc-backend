@@ -13,7 +13,7 @@
         "coraxster/flysystem-aws-s3-v3-minio": "^1.0",
         "flipbox/lumen-generator": "^8.2",
         "guzzlehttp/guzzle": "^7.3",
-        "kavist/rajaongkir": "1.0",
+        "kavist/rajaongkir": "1.1",
         "laravel/lumen-framework": "^8.0",
         "laravel/socialite": "^5.2",
         "league/flysystem-aws-s3-v3": "~1.0",

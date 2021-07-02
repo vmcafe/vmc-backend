@@ -92,6 +92,7 @@ $router->group(['prefix' => '/api/ongkir'], function () use ($router) {
     $router->get('/getP', 'CourierController@getProvince');
     $router->get('/getC', 'CourierController@getCity');
     $router->post('/cost', 'CourierController@getCost');
-    $router->get('/city', 'CourierController@postCity');
+    $router->post('/city', 'CourierController@postCity');
+    $router->post('/cities/{province_id}', 'CourierController@getCities');
 });
 $router->get('/api/user/all', 'UserController@getAllUser');

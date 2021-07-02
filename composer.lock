@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9212e36bf09d8342c4cdaca4ed63dcdd",
+    "content-hash": "a09b1e8189deb8d6f94cba8a5c797c30",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2390,16 +2390,16 @@
         },
         {
             "name": "kavist/rajaongkir",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kavist/rajaongkir.git",
-                "reference": "6d337b07943f6e621e39b4204133102bfa0e28c4"
+                "reference": "c1ab72000d05b1cb6b0a1a1364d6200b78976377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kavist/rajaongkir/zipball/6d337b07943f6e621e39b4204133102bfa0e28c4",
-                "reference": "6d337b07943f6e621e39b4204133102bfa0e28c4",
+                "url": "https://api.github.com/repos/kavist/rajaongkir/zipball/c1ab72000d05b1cb6b0a1a1364d6200b78976377",
+                "reference": "c1ab72000d05b1cb6b0a1a1364d6200b78976377",
                 "shasum": ""
             },
             "require": {
@@ -2448,9 +2448,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kavist/rajaongkir/issues",
-                "source": "https://github.com/kavist/rajaongkir/tree/v1.0.0"
+                "source": "https://github.com/kavist/rajaongkir/tree/v1.1.0"
             },
-            "time": "2019-10-07T13:45:42+00:00"
+            "time": "2019-10-11T01:21:56+00:00"
         },
         {
             "name": "laravel/lumen-framework",

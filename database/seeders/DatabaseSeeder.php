@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon;
+use Kavist\RajaOngkir\Facades\RajaOngkir;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,17 +26,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now(),
         ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Salt',
-            'created_at' => Carbon\Carbon::now(),
-            'updated_at' => Carbon\Carbon::now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'name' => 'Sweet',
-            'created_at' => Carbon\Carbon::now(),
-            'updated_at' => Carbon\Carbon::now(),
-        ]);
+        $this->call(LocationsSeeder::class);
     }
 }
