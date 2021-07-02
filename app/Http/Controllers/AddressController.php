@@ -11,19 +11,28 @@ class AddressController extends Controller
     public function add(Request $request)
     {
         try {
+            $user = auth()->user()->id;
             $rules = [
                 'receiver' => 'required|string|max:255',
-                'district' => 'required|string|max:255',
+                'kecamatan' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
                 'postal_code' => 'required|string|min:5',
                 'phone' => 'required|string|min:10',
                 'street' => 'required|string|max:255',
             ];
             $this->validate($request, $rules);
+            $hasil = Address::where('id_user', $user)
+                ->get();
+                for ($i = 0; $i < count($hasil); $i++) {
+                    $hasil[$i]->update(['selected' => false]);
+                };
             $address = new Address;
-            $user = auth()->user()->id;
             $address->id_user = $user;
             $address->receiver = $request->receiver;
-            $address->district = $request->district;
+            $address->kecamatan = $request->kecamatan;
+            $address->city = $request->city;
+            $address->province = $request->province;
             $address->phone = $request->phone;
             $address->postal_code = $request->postal_code;
             $address->street = $request->street;
@@ -32,7 +41,7 @@ class AddressController extends Controller
             // for ($i=0; $i < count($hasil); $i++) { 
             //     $selected = Address::update(['selected' => 0]);
             // }
-            $address->selected = 0;
+            $address->selected = 1;
             $address->save();
             return $this->responseSuccess($address);
         } catch (\Exception $e) {
